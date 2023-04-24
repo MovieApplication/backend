@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/movie")
 @RestController
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class MovieController {
 
     private final MovieService movieService;
