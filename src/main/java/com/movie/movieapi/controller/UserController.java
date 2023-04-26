@@ -1,8 +1,6 @@
 package com.movie.movieapi.controller;
 
-import com.movie.movieapi.domain.User;
 import com.movie.movieapi.dto.UserInsertRequestDto;
-import com.movie.movieapi.repository.UserRepository;
 import com.movie.movieapi.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 public class UserController{
 
     private final UserService userService;
-
 
     @Operation(summary = "유저 등록", description = "유저를 등록합니다.")
     @PostMapping("/info")
