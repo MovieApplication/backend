@@ -10,8 +10,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class ApiKeyAuthManager implements AuthenticationManager {
 
-    @Value("${api-auth-key}")
-    private  String API_KEY;
+    private final String API_KEY = "01057212058";
+
+
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
