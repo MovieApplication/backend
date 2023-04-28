@@ -80,12 +80,11 @@ public class MovieService {
         return movie;
     }
 
-    public MovieResponseDto selectSimilarMovie(Long movieId,Integer page) {
+    public MovieResponseDto selectSimilarMovie(Long movieId) {
         MovieResponseDto movieList = webClient.webClientInMovie().get()
                 .uri(uriBuilder -> uriBuilder.path("/" + movieId + "/similar")
                         .queryParam("api_key", apiKey)
                         .queryParam("language", "ko")
-                        .queryParam("page", page)
                         .build())
                 .retrieve().bodyToMono(MovieResponseDto.class)
                 .block();
