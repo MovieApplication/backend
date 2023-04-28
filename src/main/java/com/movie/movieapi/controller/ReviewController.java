@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.stream.Stream;
@@ -23,6 +24,7 @@ public class ReviewController {
     private final ReviewService reviewService;
 
     @Operation(summary = "리뷰 등록", description = "리뷰를 등록합니다.")
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("")
     public ResponseEntity<?> insertReview(@RequestBody ReviewInsertRequestDto reviewInsertRequestDto) {
         reviewService.insertReview(reviewInsertRequestDto);

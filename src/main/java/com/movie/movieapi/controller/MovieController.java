@@ -21,20 +21,19 @@ public class MovieController {
     private final MovieService movieService;
 
     @Operation(summary = "실시간 인기 순위 영화 리스트 목록 조회", description = "실시간 인기 순위 영화 리스트 목록 조회를 합니다.")
-    @PreAuthorize("isAuthenticated()")
     @GetMapping("/popular")
-    public ResponseEntity<MovieResponseDto> selectPopularMovies(){
-        return ResponseEntity.ok(movieService.selectPopularMovies());
+    public ResponseEntity<MovieResponseDto> selectPopularMovies(@RequestParam(value = "page",required = false)Integer page){
+        return ResponseEntity.ok(movieService.selectPopularMovies(page));
     }
     @Operation(summary = "평점 높은순으로 영화 목록 조회", description = "평점 높은순으로 영화 목록 조회를 합니다.")
     @GetMapping("/vote-average")
-    public ResponseEntity<MovieResponseDto> selectVoteAverageMovies(){
-        return ResponseEntity.ok(movieService.selectVoteAverageMovies());
+    public ResponseEntity<MovieResponseDto> selectVoteAverageMovies(@RequestParam(value = "page",required = false)Integer page){
+        return ResponseEntity.ok(movieService.selectVoteAverageMovies(page));
     }
     @Operation(summary = "최신에 개봉한순으로 목록 조회(현재날짜기준)", description = "최신에 개봉한순으로 목록 조회(현재날짜기준)를 합니다.")
     @GetMapping("/release-date")
-    public ResponseEntity<MovieResponseDto> selectReleaseDateMovies(){
-        return ResponseEntity.ok(movieService.selectReleaseDateMovies());
+    public ResponseEntity<MovieResponseDto> selectReleaseDateMovies(@RequestParam(value = "page",required = false)Integer page){
+        return ResponseEntity.ok(movieService.selectReleaseDateMovies(page));
     }
 
     @Operation(summary = "년도별 영화 목록 조회", description = "년도별 영화 목록 조회를 합니다.")
@@ -50,7 +49,8 @@ public class MovieController {
     }
     @Operation(summary = "해당 영화와 유사한 영화 목록조회", description = "해당 영화와 유사한 영화 목록조회를 합니다.")
     @GetMapping("/{movieId}/similar")
-    public ResponseEntity<MovieResponseDto> selectSimilarMovie(@PathVariable("movieId")Long movieId){
-        return ResponseEntity.ok(movieService.selectSimilarMovie(movieId));
+    public ResponseEntity<MovieResponseDto> selectSimilarMovie(@PathVariable("movieId")Long movieId,
+                                                               @RequestParam(value = "page",required = false)Integer page){
+        return ResponseEntity.ok(movieService.selectSimilarMovie(movieId,page));
     }
 }

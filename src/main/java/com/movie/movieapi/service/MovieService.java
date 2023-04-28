@@ -4,6 +4,7 @@ import com.movie.movieapi.config.WebClientConfig;
 import com.movie.movieapi.dto.MovieDetailResponseDto;
 import com.movie.movieapi.dto.MovieResponseDto;
 import com.movie.movieapi.dto.SearchDto;
+import io.swagger.models.auth.In;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,11 +27,12 @@ public class MovieService {
 
     private final WebClientConfig webClient;
 
-    public MovieResponseDto selectPopularMovies() {
+    public MovieResponseDto selectPopularMovies(Integer page) {
         MovieResponseDto movieList = webClient.webClientInMovie().get()
                 .uri(uriBuilder -> uriBuilder.path("/popular")
                         .queryParam("api_key", apiKey)
                         .queryParam("language", "ko")
+                        .queryParam("page", page)
                         .build())
                 .retrieve().bodyToMono(MovieResponseDto.class)
                 .block();
@@ -60,11 +62,12 @@ public class MovieService {
         return movie;
     }
 
-    public MovieResponseDto selectSimilarMovie(Long movieId) {
+    public MovieResponseDto selectSimilarMovie(Long movieId,Integer page) {
         MovieResponseDto movieList = webClient.webClientInMovie().get()
                 .uri(uriBuilder -> uriBuilder.path("/" + movieId + "/similar")
                         .queryParam("api_key", apiKey)
                         .queryParam("language", "ko")
+                        .queryParam("page", page)
                         .build())
                 .retrieve().bodyToMono(MovieResponseDto.class)
                 .block();
@@ -97,12 +100,13 @@ public class MovieService {
             return movieList;
     }
 
-    public MovieResponseDto selectReleaseDateMovies() {
+    public MovieResponseDto selectReleaseDateMovies(Integer page) {
         MovieResponseDto movieList = webClient.webClientInMovieSearch().get()
                 .uri(uriBuilder -> uriBuilder.path("")
                         .queryParam("api_key", apiKey)
                         .queryParam("language", "ko")
                         .queryParam("sort_by", "primary_release_date.desc")
+                        .queryParam("page", page)
                         .queryParam("primary_release_date.lte", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
                         .build())
                 .retrieve().bodyToMono(MovieResponseDto.class)
@@ -124,6 +128,7 @@ public class MovieService {
                         .queryParam("api_key", apiKey)
                         .queryParam("language", "ko")
                         .queryParam("primary_release_year",searchDto.getYear())
+                        .queryParam("page",searchDto.getPage())
                         .build())
                 .retrieve().bodyToMono(MovieResponseDto.class)
                 .block();
