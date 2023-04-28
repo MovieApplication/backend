@@ -8,7 +8,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -19,6 +18,12 @@ import org.springframework.web.bind.annotation.*;
 public class MovieController {
 
     private final MovieService movieService;
+
+    @Operation(summary = "현재 극장에 있는 영화 목록 조회",description = "현재 극장에 있는 영화 목록 조회를 합니다.")
+    @GetMapping("")
+    public ResponseEntity<MovieResponseDto> selectMoviesInTheater(@RequestParam(value = "page",required = false)Integer page){
+        return ResponseEntity.ok(movieService.selectMoviesInTheater(page));
+    }
 
     @Operation(summary = "실시간 인기 순위 영화 리스트 목록 조회", description = "실시간 인기 순위 영화 리스트 목록 조회를 합니다.")
     @GetMapping("/popular")
@@ -35,13 +40,11 @@ public class MovieController {
     public ResponseEntity<MovieResponseDto> selectReleaseDateMovies(@RequestParam(value = "page",required = false)Integer page){
         return ResponseEntity.ok(movieService.selectReleaseDateMovies(page));
     }
-
     @Operation(summary = "년도별 영화 목록 조회", description = "년도별 영화 목록 조회를 합니다.")
     @GetMapping("/year")
     public ResponseEntity<MovieResponseDto> selectYearMovies(@ModelAttribute SearchDto searchDto){
         return ResponseEntity.ok(movieService.selectYearMovies(searchDto));
     }
-
     @Operation(summary = "영화 세부 정보 조회", description = "영화 세부 정보 조회를 합니다.")
     @GetMapping("/{movieId}")
     public ResponseEntity<MovieDetailResponseDto> selectMovie(@PathVariable("movieId")Long movieId){

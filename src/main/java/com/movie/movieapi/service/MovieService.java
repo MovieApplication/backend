@@ -4,17 +4,13 @@ import com.movie.movieapi.config.WebClientConfig;
 import com.movie.movieapi.dto.MovieDetailResponseDto;
 import com.movie.movieapi.dto.MovieResponseDto;
 import com.movie.movieapi.dto.SearchDto;
-import io.swagger.models.auth.In;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -26,6 +22,28 @@ public class MovieService {
     private String defaultImageUrl;
 
     private final WebClientConfig webClient;
+
+
+    public MovieResponseDto selectMoviesInTheater(Integer page) {
+        MovieResponseDto movieList = webClient.webClientInMovieSearch().get()
+                .uri(uriBuilder -> uriBuilder.path("")
+                        .queryParam("api_key", apiKey)
+                        .queryParam("language", "ko")
+                        .queryParam("page", page)
+                        .queryParam("primary_release_date.gte", LocalDateTime.now().minusMonths(3).format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
+                        .queryParam("primary_release_date.lte", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
+                        .build())
+                .retrieve().bodyToMono(MovieResponseDto.class)
+                .block();
+        if (!ObjectUtils.isEmpty(movieList)) {
+            movieList.getResults().forEach(movie -> {
+                        movie.setPoster_path(defaultImageUrl + movie.getPoster_path());
+                        movie.setBackdrop_path(defaultImageUrl + movie.getBackdrop_path());
+                    }
+            );
+        }
+        return movieList;
+    }
 
     public MovieResponseDto selectPopularMovies(Integer page) {
         MovieResponseDto movieList = webClient.webClientInMovie().get()
@@ -81,12 +99,13 @@ public class MovieService {
         return movieList;
     }
 
-    public MovieResponseDto selectVoteAverageMovies() {
+    public MovieResponseDto selectVoteAverageMovies(Integer page) {
             MovieResponseDto movieList = webClient.webClientInMovieSearch().get()
                     .uri(uriBuilder -> uriBuilder.path("")
                             .queryParam("api_key", apiKey)
                             .queryParam("language", "ko")
                             .queryParam("sort_by","vote_average.desc")
+                            .queryParam("page",page)
                             .build())
                     .retrieve().bodyToMono(MovieResponseDto.class)
                     .block();
@@ -141,5 +160,5 @@ public class MovieService {
         }
         return movieList;
     }
-    }
+}
 
