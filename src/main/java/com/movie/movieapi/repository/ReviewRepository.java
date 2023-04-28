@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ReviewRepository extends MongoRepository<Review,String> {
+public interface ReviewRepository extends MongoRepository<Review,String>{
     List<Review> findAllByMovieId(String movieId);
 }

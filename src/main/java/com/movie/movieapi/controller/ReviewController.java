@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.stream.Stream;
 
 @RestController
@@ -36,7 +37,7 @@ public class ReviewController {
             @ApiResponse(responseCode = "200", description = "정상 처리", content = @Content(schema = @Schema(implementation = ReviewSelectResponseDto.class)))
     })
     @GetMapping("/{movieId}")
-    public ResponseEntity<Stream<ReviewSelectResponseDto>> selectReviews(@PathVariable("movieId") String movieId) {
+    public ResponseEntity<List<ReviewSelectResponseDto>> selectReviews(@PathVariable("movieId") String movieId) {
         return ResponseEntity.ok(reviewService.selectReviews(movieId));
 
     }

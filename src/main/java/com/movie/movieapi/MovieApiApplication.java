@@ -2,9 +2,11 @@ package com.movie.movieapi;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 @SpringBootApplication
+@EnableCaching
 @EnableMongoRepositories(basePackages = "com.movie.movieapi.repository")
 public class MovieApiApplication {
 

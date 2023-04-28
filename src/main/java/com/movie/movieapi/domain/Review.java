@@ -16,6 +16,8 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Review implements Serializable {
+    private static final long serialVersionUID = -1L;
+
     @Id
     private String _id;
     private User user;

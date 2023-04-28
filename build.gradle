@@ -34,6 +34,13 @@ dependencies {
     runtimeOnly 'com.mysql:mysql-connector-j'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    //json Dependencies
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
+    implementation 'org.springframework.data:spring-data-commons'
+    implementation 'commons-codec:commons-codec:1.15'
+    implementation group: 'org.json', name: 'json', version: '20201115'
+    implementation 'com.google.code.gson:gson'
 }
 
 tasks.named('test') {

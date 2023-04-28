@@ -8,11 +8,14 @@ import com.movie.movieapi.repository.ReviewRepository;
 import com.movie.movieapi.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.webjars.NotFoundException;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
@@ -26,6 +29,7 @@ public class ReviewService {
 
 
     @Transactional
+    @CacheEvict(value = "review", allEntries = true)
     public void insertReview(ReviewInsertRequestDto reviewInsertRequestDto) {
         User user = userRepository.findById(reviewInsertRequestDto.getUserId())
                 .orElseThrow(null);
@@ -33,8 +37,11 @@ public class ReviewService {
     }
 
     @Transactional(readOnly = true)
-    public Stream<ReviewSelectResponseDto> selectReviews(String movieId) {
+    @Cacheable(value = "review")
+    public List<ReviewSelectResponseDto> selectReviews(String movieId) {
         List<Review> reviews = reviewRepository.findAllByMovieId(movieId);
-        return reviews.stream().map(ReviewSelectResponseDto::new);
+
+        return reviews.stream().map(ReviewSelectResponseDto::new).collect(Collectors.toList());
+
     }
 }

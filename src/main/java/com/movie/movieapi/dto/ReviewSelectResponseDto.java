@@ -7,11 +7,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReviewSelectResponseDto {
+public class ReviewSelectResponseDto implements Serializable {
     @Schema(example = "6446115f3e3b890047b35be4")
     private String userId;
     @Schema(example = "내용")

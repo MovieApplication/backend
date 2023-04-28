@@ -10,12 +10,14 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
 
-@Document("user")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Document("user")
 public class User implements Serializable {
+
+    private static final long serialVersionUID = -1L;
     @Id
     private String _id;
     private String userId;
