@@ -51,7 +51,7 @@ public class MovieController {
         return ResponseEntity.ok(movieService.selectMovie(movieId));
     }
     @Operation(summary = "해당 영화와 유사한 영화 목록조회", description = "해당 영화와 유사한 영화 목록조회를 합니다.")
-    @GetMapping("/{movieId}/similar")
+    @GetMapping("/similar/{movieId}")
     public ResponseEntity<MovieResponseDto> selectSimilarMovie(@PathVariable("movieId")Long movieId){
         return ResponseEntity.ok(movieService.selectSimilarMovie(movieId));
     }
