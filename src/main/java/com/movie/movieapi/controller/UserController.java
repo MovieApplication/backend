@@ -16,10 +16,19 @@ public class UserController{
 
     private final UserService userService;
 
+
+    @Operation(summary = "로그인 (토큰 획득)", description = "로그인을 하여 토큰을 획득합니다.")
+    @PostMapping("/login/{userId}")
+    public ResponseEntity<?> login(@PathVariable("userId")String userId){
+        return ResponseEntity.ok(userService.login(userId));
+    }
+
+
     @Operation(summary = "유저 등록", description = "유저를 등록합니다.")
     @PostMapping("/info")
     public ResponseEntity<?> insertUserInfo(@RequestBody UserInsertRequestDto userInsertRequestDto){
         userService.insertUserInfo(userInsertRequestDto);
         return ResponseEntity.ok().build();
     }
+
 }

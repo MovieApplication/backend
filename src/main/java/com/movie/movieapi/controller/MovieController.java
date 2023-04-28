@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -20,6 +21,7 @@ public class MovieController {
     private final MovieService movieService;
 
     @Operation(summary = "실시간 인기 순위 영화 리스트 목록 조회", description = "실시간 인기 순위 영화 리스트 목록 조회를 합니다.")
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/popular")
     public ResponseEntity<MovieResponseDto> selectPopularMovies(){
         return ResponseEntity.ok(movieService.selectPopularMovies());
