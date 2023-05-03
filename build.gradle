@@ -8,6 +8,11 @@ group = 'com.movie'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
+bootJar {
+    jar.enabled = true
+    archiveName("test.jar")
+}
+
 configurations {
     compileOnly {
         extendsFrom annotationProcessor
