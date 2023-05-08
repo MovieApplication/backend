@@ -11,12 +11,11 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 
 @RestController
@@ -39,7 +38,7 @@ public class ReviewController {
             @ApiResponse(responseCode = "200", description = "정상 처리", content = @Content(schema = @Schema(implementation = ReviewSelectResponseDto.class)))
     })
     @GetMapping("/{movieId}")
-    public ResponseEntity<List<ReviewSelectResponseDto>> selectReviews(@PathVariable("movieId") Long movieId,
+    public ResponseEntity<Page<ReviewSelectResponseDto>> selectReviews(@PathVariable("movieId") Long movieId,
                                                                        Pageable pageable) {
         return ResponseEntity.ok(reviewService.selectReviews(movieId,pageable));
 

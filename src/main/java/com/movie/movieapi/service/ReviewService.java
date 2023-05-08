@@ -15,10 +15,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 @Slf4j
@@ -40,9 +38,13 @@ public class ReviewService {
 
     @Transactional(readOnly = true)
     @Cacheable(value = "review")
-    public List<ReviewSelectResponseDto> selectReviews(Long movieId, Pageable pageable) {
+    public Page<ReviewSelectResponseDto> selectReviews(Long movieId, Pageable pageable) {
         Page<Review> reviews = reviewRepository.findAllByMovieId(movieId,pageable);
-        return reviews.stream().map(ReviewSelectResponseDto::new).collect(Collectors.toList());
+        return reviews.map(review -> ReviewSelectResponseDto.builder()
+                .user_id(review.getUser().get_id())
+                .userId(review.getUser().getUserId())
+                .content(review.getContent())
+                .build());
 
     }
 }
