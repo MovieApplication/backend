@@ -2,6 +2,7 @@ package com.movie.movieapi.controller;
 
 import com.movie.movieapi.dto.ReviewInsertRequestDto;
 import com.movie.movieapi.dto.ReviewSelectResponseDto;
+import com.movie.movieapi.result.ListResponsePage;
 import com.movie.movieapi.service.ReviewService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -13,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -38,9 +40,9 @@ public class ReviewController {
             @ApiResponse(responseCode = "200", description = "정상 처리", content = @Content(schema = @Schema(implementation = ReviewSelectResponseDto.class)))
     })
     @GetMapping("/{movieId}")
-    public ResponseEntity<Page<ReviewSelectResponseDto>> selectReviews(@PathVariable("movieId") Long movieId,
-                                                                       Pageable pageable) {
-        return ResponseEntity.ok(reviewService.selectReviews(movieId,pageable));
+    public ResponseEntity<ListResponsePage<ReviewSelectResponseDto>> selectReviews(@PathVariable("movieId") Long movieId,
+                                                                                   Pageable pageable) {
+        return ResponseEntity.ok(new ListResponsePage<>(reviewService.selectReviews(movieId,pageable)));
 
     }
 }
