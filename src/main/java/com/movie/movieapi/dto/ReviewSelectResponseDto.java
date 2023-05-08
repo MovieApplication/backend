@@ -14,11 +14,15 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class ReviewSelectResponseDto implements Serializable {
     @Schema(example = "6446115f3e3b890047b35be4")
-    private String userId;
+    private String user_id;
     @Schema(example = "내용")
     private String content;
 
+    @Schema(example = "이름")
+    private String userId;
+
     public ReviewSelectResponseDto(Review review) {
+        this.user_id = review.getUser().get_id();
         this.userId = review.getUser().getUserId();
         this.content = review.getContent();
     }

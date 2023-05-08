@@ -24,6 +24,7 @@ public class Review implements Serializable {
     private String movieId;
     private String content;
 
+
     public Review(ReviewInsertRequestDto reviewInsertRequestDto,User user){
         this.user = user;
         this.movieId = reviewInsertRequestDto.getMovieId();

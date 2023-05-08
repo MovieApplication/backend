@@ -33,7 +33,7 @@ public class ReviewService {
     @Transactional
     @CacheEvict(value = "review", allEntries = true)
     public void insertReview(ReviewInsertRequestDto reviewInsertRequestDto) {
-        User user = userRepository.findById(reviewInsertRequestDto.getUser_id())
+        User user = userRepository.findByUserId(reviewInsertRequestDto.getUserId())
                 .orElseThrow(null);
         reviewRepository.save(new Review(reviewInsertRequestDto, user));
     }
