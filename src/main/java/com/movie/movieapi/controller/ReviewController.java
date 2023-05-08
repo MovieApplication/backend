@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -25,7 +26,7 @@ import java.util.List;
 public class ReviewController {
     private final ReviewService reviewService;
 
-    @Operation(summary = "리뷰 등록", description = "리뷰를 등록합니다.")
+    @Operation(summary = "리뷰 등록", description = "리뷰를 등록합니다.",security = @SecurityRequirement(name = "Authorization"))
     @PreAuthorize("isAuthenticated()")
     @PostMapping("")
     public ResponseEntity<?> insertReview(@RequestBody ReviewInsertRequestDto reviewInsertRequestDto) {
