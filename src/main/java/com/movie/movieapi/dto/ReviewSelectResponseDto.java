@@ -16,10 +16,9 @@ import java.io.Serializable;
 @Builder
 public class ReviewSelectResponseDto implements Serializable {
     @Schema(example = "6446115f3e3b890047b35be4")
-    private String user_id;
+    private String review_id;
     @Schema(example = "내용")
     private String content;
-
     @Schema(example = "이름")
     private String userId;
 }
