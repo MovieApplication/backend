@@ -39,7 +39,7 @@ public class ReviewController {
             @ApiResponse(responseCode = "200", description = "정상 처리", content = @Content(schema = @Schema(implementation = ReviewSelectResponseDto.class)))
     })
     @GetMapping("/{movieId}")
-    public ResponseEntity<List<ReviewSelectResponseDto>> selectReviews(@PathVariable("movieId") String movieId,
+    public ResponseEntity<List<ReviewSelectResponseDto>> selectReviews(@PathVariable("movieId") Long movieId,
                                                                        Pageable pageable) {
         return ResponseEntity.ok(reviewService.selectReviews(movieId,pageable));
 
