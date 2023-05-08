@@ -7,7 +7,7 @@ import lombok.Data;
 public class ReviewInsertRequestDto {
     @Schema(example = "사용자 이름")
     private String userId;
-    @Schema(example = "6446115f3e3b890047b35be4")
+    @Schema(example = "603692")
     private String movieId;
     @Schema(example = "리뷰 내용작성해주세요.")
     private String content;
