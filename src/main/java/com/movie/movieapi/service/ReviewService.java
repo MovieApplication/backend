@@ -40,7 +40,7 @@ public class ReviewService {
 
     @Transactional(readOnly = true)
     @Cacheable(value = "review")
-    public List<ReviewSelectResponseDto> selectReviews(String movieId, Pageable pageable) {
+    public List<ReviewSelectResponseDto> selectReviews(Long movieId, Pageable pageable) {
         Page<Review> reviews = reviewRepository.findAllByMovieId(movieId,pageable);
         return reviews.stream().map(ReviewSelectResponseDto::new).collect(Collectors.toList());
 
