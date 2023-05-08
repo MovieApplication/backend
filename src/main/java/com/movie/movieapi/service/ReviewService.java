@@ -6,6 +6,7 @@ import com.movie.movieapi.dto.ReviewInsertRequestDto;
 import com.movie.movieapi.dto.ReviewSelectResponseDto;
 import com.movie.movieapi.repository.ReviewRepository;
 import com.movie.movieapi.repository.UserRepository;
+import com.movie.movieapi.util.MaskingUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
@@ -37,12 +38,12 @@ public class ReviewService {
     }
 
     @Transactional(readOnly = true)
-    @Cacheable(value = "review")
+    //@Cacheable(value = "review")
     public Page<ReviewSelectResponseDto> selectReviews(Long movieId, Pageable pageable) {
         Page<Review> reviews = reviewRepository.findAllByMovieId(movieId,pageable);
         return reviews.map(review -> ReviewSelectResponseDto.builder()
                 .review_id(review.get_id())
-                .userId(review.getUser().getUserId())
+                .userId(MaskingUtil.maskName(review.getUser().getUserId()))
                 .content(review.getContent())
                 .build());
 
