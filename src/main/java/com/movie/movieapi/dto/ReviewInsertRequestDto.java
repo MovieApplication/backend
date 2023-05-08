@@ -8,7 +8,7 @@ public class ReviewInsertRequestDto {
     @Schema(example = "사용자 이름")
     private String userId;
     @Schema(example = "603692")
-    private String movieId;
+    private Long movieId;
     @Schema(example = "리뷰 내용작성해주세요.")
     private String content;
 }
