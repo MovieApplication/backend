@@ -21,7 +21,7 @@ public class Review implements Serializable {
     @Id
     private String _id;
     private User user;
-    private String movieId;
+    private Long movieId;
     private String content;
 
 
