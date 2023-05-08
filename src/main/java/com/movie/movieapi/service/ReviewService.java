@@ -16,9 +16,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -38,7 +35,7 @@ public class ReviewService {
     }
 
     @Transactional(readOnly = true)
-    //@Cacheable(value = "review")
+    @Cacheable(value = "review")
     public Page<ReviewSelectResponseDto> selectReviews(Long movieId, Pageable pageable) {
         Page<Review> reviews = reviewRepository.findAllByMovieId(movieId,pageable);
         return reviews.map(review -> ReviewSelectResponseDto.builder()
