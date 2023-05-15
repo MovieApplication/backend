@@ -4,6 +4,7 @@ import com.movie.movieapi.domain.Review;
 import com.movie.movieapi.domain.User;
 import com.movie.movieapi.dto.ReviewInsertRequestDto;
 import com.movie.movieapi.dto.ReviewSelectResponseDto;
+import com.movie.movieapi.dto.ReviewUpdateRequestDto;
 import com.movie.movieapi.repository.ReviewRepository;
 import com.movie.movieapi.repository.UserRepository;
 import com.movie.movieapi.util.MaskingUtil;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.webjars.NotFoundException;
 
 @Service
 @Slf4j
@@ -28,10 +30,16 @@ public class ReviewService {
 
     @Transactional
     @CacheEvict(value = "review", allEntries = true)
-    public void insertReview(ReviewInsertRequestDto reviewInsertRequestDto) {
-        User user = userRepository.findByUserId(reviewInsertRequestDto.getUserId())
+    public void insertReview(ReviewInsertRequestDto reviewInsertRequestDto, User user) {
+        User userInfo = userRepository.findByUserId(user.getUserId())
                 .orElseThrow(null);
-        reviewRepository.save(new Review(reviewInsertRequestDto, user));
+
+        boolean review = reviewRepository.existsByUserAndContent(userInfo,reviewInsertRequestDto.getContent());
+
+        if(review){
+            throw new NotFoundException("같은 내용으로 리뷰를 작성할 수 없습니다.");
+        }
+        reviewRepository.save(new Review(reviewInsertRequestDto, userInfo));
     }
 
     @Transactional(readOnly = true)
@@ -40,9 +48,38 @@ public class ReviewService {
         Page<Review> reviews = reviewRepository.findAllByMovieId(movieId,pageable);
         return reviews.map(review -> ReviewSelectResponseDto.builder()
                 .review_id(review.get_id())
-                .userId(MaskingUtil.maskName(review.getUser().getUserId()))
+                .userId(review.getUser().getUserId())
                 .content(review.getContent())
                 .build());
 
+    }
+    @Transactional
+    @CacheEvict(value = "review", allEntries = true)
+    public void updateReview(String reviewId, ReviewUpdateRequestDto requestDto,User user) {
+        Review review = reviewRepository.findById(reviewId)
+                .orElseThrow(null);
+        //본인 글인지 판단
+        if(review.getUser().getUserId().equals(user.getUserId())){
+            //리뷰 수정
+            review.updateReview(requestDto);
+            //DB 저장
+            reviewRepository.save(review);
+        }else{
+            throw new NotFoundException("수정 할수 없습니다.");
+        }
+    }
+
+    public void deleteReview(String reviewId, User user) {
+        Review review = reviewRepository.findById(reviewId)
+                .orElseThrow(null);
+        //본인 글인지 판단
+        if(review.getUser().getUserId().equals(user.getUserId())){
+            //리뷰 삭제
+            review.deleteReview();
+            //DB 저장
+            reviewRepository.save(review);
+        }else{
+            throw new NotFoundException("수정 할수 없습니다.");
+        }
     }
 }

@@ -5,6 +5,6 @@ import lombok.Data;
 
 @Data
 public class UserInsertRequestDto {
-    @Schema(example = "김영재")
+    @Schema(example = "newy12@naver.com")
     private String userId;
 }
