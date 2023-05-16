@@ -146,7 +146,7 @@ public class JwtUtil {
         String refreshToken = createRefreshToken(authenticationToken, extraClaims);*/
 
         claims.put("_id", user.get_id());
-        return createToken(claims, user.getUserId());
+        return createToken(claims, user.getKakaoId());
     }
 
 }

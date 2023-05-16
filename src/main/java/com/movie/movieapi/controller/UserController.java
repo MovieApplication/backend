@@ -18,9 +18,9 @@ public class UserController{
 
 
     @Operation(summary = "로그인 (토큰 획득)", description = "로그인을 하여 토큰을 획득합니다.")
-    @PostMapping("/login/{userId}")
-    public ResponseEntity<?> login(@PathVariable("userId")String userId){
-        return ResponseEntity.ok(userService.login(userId));
+    @PostMapping("/login/{kakaoId}")
+    public ResponseEntity<?> login(@PathVariable("kakaoId")String kakaoId){
+        return ResponseEntity.ok(userService.login(kakaoId));
     }
 
 

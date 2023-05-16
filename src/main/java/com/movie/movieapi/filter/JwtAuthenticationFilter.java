@@ -33,13 +33,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         final String authorizationHeader = request.getHeader("Authorization");
 
-        String userId= null;
+        String kakaoId = null;
         String jwt = null;
 
         if(authorizationHeader != null && authorizationHeader.startsWith("Bearer ")){
             jwt = authorizationHeader.substring(7);
             try {
-                userId = jwtUtil.extractUsername(jwt);
+                kakaoId = jwtUtil.extractUsername(jwt);
             }catch(IllegalArgumentException e){
                 logger.error("error occured during getting username from token!", e);
                 throw new NotFoundException("error occured during getting username from token!");
@@ -58,9 +58,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
 
-        if(userId != null){
-            User user = userRepository.findByUserId(userId).get();
-            if (jwtUtil.validateToken(jwt,userId)) {
+        if(kakaoId != null){
+            User user = userRepository.findByKakaoId(kakaoId).get();
+            if (jwtUtil.validateToken(jwt,kakaoId)) {
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                         new UsernamePasswordAuthenticationToken(user, null,null);
                 usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

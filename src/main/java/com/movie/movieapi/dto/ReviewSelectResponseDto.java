@@ -19,6 +19,8 @@ public class ReviewSelectResponseDto implements Serializable {
     private String review_id;
     @Schema(example = "내용")
     private String content;
+    @Schema(example = "1234567890")
+    private String kakaoId;
     @Schema(example = "이름")
-    private String userId;
+    private String userNickname;
 }

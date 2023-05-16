@@ -31,7 +31,7 @@ public class ReviewService {
     @Transactional
     @CacheEvict(value = "review", allEntries = true)
     public void insertReview(ReviewInsertRequestDto reviewInsertRequestDto, User user) {
-        User userInfo = userRepository.findByUserId(user.getUserId())
+        User userInfo = userRepository.findByKakaoId(user.getKakaoId())
                 .orElseThrow(null);
 
         boolean review = reviewRepository.existsByUserAndContent(userInfo,reviewInsertRequestDto.getContent());
@@ -48,7 +48,8 @@ public class ReviewService {
         Page<Review> reviews = reviewRepository.findAllByMovieId(movieId,pageable);
         return reviews.map(review -> ReviewSelectResponseDto.builder()
                 .review_id(review.get_id())
-                .userId(review.getUser().getUserId())
+                .kakaoId(review.getUser().getKakaoId())
+                .userNickname(review.getUser().getUserNickname())
                 .content(review.getContent())
                 .build());
 
@@ -59,7 +60,7 @@ public class ReviewService {
         Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(null);
         //본인 글인지 판단
-        if(review.getUser().getUserId().equals(user.getUserId())){
+        if(review.getUser().getKakaoId().equals(user.getKakaoId())){
             //리뷰 수정
             review.updateReview(requestDto);
             //DB 저장
@@ -73,13 +74,13 @@ public class ReviewService {
         Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(null);
         //본인 글인지 판단
-        if(review.getUser().getUserId().equals(user.getUserId())){
+        if(review.getUser().getKakaoId().equals(user.getKakaoId())){
             //리뷰 삭제
             review.deleteReview();
             //DB 저장
             reviewRepository.save(review);
         }else{
-            throw new NotFoundException("수정 할수 없습니다.");
+            throw new NotFoundException("삭제 할수 없습니다.");
         }
     }
 }

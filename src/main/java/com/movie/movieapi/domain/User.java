@@ -20,9 +20,12 @@ public class User implements Serializable {
     private static final long serialVersionUID = -1L;
     @Id
     private String _id;
-    private String userId;
+
+    private String kakaoId;
+    private String userNickname;
 
     public User(UserInsertRequestDto userInsertRequestDto){
-        this.userId = userInsertRequestDto.getUserId();
+        this.userNickname = userInsertRequestDto.getUserNickname();
+        this.kakaoId = userInsertRequestDto.getKakaoId();
     }
 }
