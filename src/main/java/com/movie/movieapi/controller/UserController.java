@@ -1,8 +1,13 @@
 package com.movie.movieapi.controller;
 
+import com.movie.movieapi.dto.ReviewSelectResponseDto;
 import com.movie.movieapi.dto.UserInsertRequestDto;
 import com.movie.movieapi.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +31,7 @@ public class UserController{
 
     @Operation(summary = "유저 등록", description = "유저를 등록합니다.")
     @PostMapping("/info")
-    public ResponseEntity<?> insertUserInfo(@RequestBody UserInsertRequestDto userInsertRequestDto){
+    public ResponseEntity<UserInsertRequestDto> insertUserInfo(@RequestBody UserInsertRequestDto userInsertRequestDto){
         userService.insertUserInfo(userInsertRequestDto);
         return ResponseEntity.ok().build();
     }

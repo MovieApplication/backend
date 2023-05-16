@@ -7,6 +7,7 @@ import com.movie.movieapi.dto.ReviewUpdateRequestDto;
 import com.movie.movieapi.result.ListResponsePage;
 import com.movie.movieapi.service.ReviewService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -31,17 +32,17 @@ public class ReviewController {
     @Operation(summary = "리뷰 등록", description = "리뷰를 등록합니다.",security = @SecurityRequirement(name = "Authorization"))
     @PreAuthorize("isAuthenticated()")
     @PostMapping("")
-    public ResponseEntity<?> insertReview(@RequestBody ReviewInsertRequestDto reviewInsertRequestDto,
-                                          @AuthenticationPrincipal User user) {
+    public ResponseEntity<ReviewInsertRequestDto> insertReview(@RequestBody ReviewInsertRequestDto reviewInsertRequestDto,
+                                          @Parameter(hidden = true) @AuthenticationPrincipal User user) {
         reviewService.insertReview(reviewInsertRequestDto,user);
         return ResponseEntity.ok().build();
     }
     @Operation(summary = "리뷰 수정", description = "리뷰를 수정합니다.",security = @SecurityRequirement(name = "Authorization"))
     @PreAuthorize("isAuthenticated()")
     @PutMapping("/{reviewId}")
-    public ResponseEntity<?> updateReview(@PathVariable("reviewId")String reviewId,
+    public ResponseEntity<ReviewUpdateRequestDto> updateReview(@PathVariable("reviewId")String reviewId,
                                           @RequestBody ReviewUpdateRequestDto reviewUpdateRequestDto,
-                                          @AuthenticationPrincipal User user) {
+                                          @Parameter(hidden = true) @AuthenticationPrincipal User user) {
         reviewService.updateReview(reviewId,reviewUpdateRequestDto,user);
         return ResponseEntity.ok().build();
     }
@@ -49,7 +50,7 @@ public class ReviewController {
     @PreAuthorize("isAuthenticated()")
     @DeleteMapping("/{reviewId}")
     public ResponseEntity<?> deleteReview(@PathVariable("reviewId")String reviewId,
-                                          @AuthenticationPrincipal User user){
+                                          @Parameter(hidden = true) @AuthenticationPrincipal User user){
         reviewService.deleteReview(reviewId,user);
         return ResponseEntity.ok().build();
     }
