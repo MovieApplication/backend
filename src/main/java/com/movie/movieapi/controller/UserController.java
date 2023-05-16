@@ -31,4 +31,11 @@ public class UserController{
         return ResponseEntity.ok().build();
     }
 
+    @Operation(summary = "유저 정보 있는지 체크", description = "유저 정보가 있는지 체크합니다.")
+    @GetMapping("/info/{kakaoId}")
+    public ResponseEntity<?> userInfoCheck(@PathVariable("kakaoId")String kakaoId){
+
+        return ResponseEntity.ok(userService.userInfoCheck(kakaoId));
+    }
+
 }

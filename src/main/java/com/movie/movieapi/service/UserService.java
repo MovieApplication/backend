@@ -43,4 +43,8 @@ public class UserService {
         refreshTokenInfo.setRefreshToken(refreshToken,userInfo);
         return new UserLoginResponseDto(accessToken,refreshTokenRepository.save(refreshTokenInfo).get_id());
     }
+
+    public boolean userInfoCheck(String kakaoId) {
+       return userRepository.existsByKakaoId(kakaoId);
+    }
 }
