@@ -47,7 +47,7 @@ public class ReviewService {
     public Page<ReviewSelectResponseDto> selectReviews(Long movieId, Pageable pageable) {
         Page<Review> reviews = reviewRepository.findAllByMovieId(movieId,pageable);
         return reviews.map(review -> ReviewSelectResponseDto.builder()
-                .review_id(review.get_id())
+                .reviewId(review.get_id())
                 .kakaoId(review.getUser().getKakaoId())
                 .userNickname(review.getUser().getUserNickname())
                 .content(review.getContent())
