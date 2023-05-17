@@ -39,11 +39,10 @@ public class ReviewController {
     }
     @Operation(summary = "리뷰 수정", description = "리뷰를 수정합니다.",security = @SecurityRequirement(name = "Authorization"))
     @PreAuthorize("isAuthenticated()")
-    @PutMapping("/{reviewId}")
-    public ResponseEntity<ReviewUpdateRequestDto> updateReview(@PathVariable("reviewId")String reviewId,
-                                          @RequestBody ReviewUpdateRequestDto reviewUpdateRequestDto,
-                                          @Parameter(hidden = true) @AuthenticationPrincipal User user) {
-        reviewService.updateReview(reviewId,reviewUpdateRequestDto,user);
+    @PutMapping("")
+    public ResponseEntity<ReviewUpdateRequestDto> updateReview(@RequestBody ReviewUpdateRequestDto reviewUpdateRequestDto,
+                                                               @Parameter(hidden = true) @AuthenticationPrincipal User user) {
+        reviewService.updateReview(reviewUpdateRequestDto,user);
         return ResponseEntity.ok().build();
     }
     @Operation(summary = "리뷰 삭제", description = "리뷰를 삭제합니다.",security = @SecurityRequirement(name = "Authorization"))

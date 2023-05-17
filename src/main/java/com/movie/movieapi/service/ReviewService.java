@@ -56,8 +56,8 @@ public class ReviewService {
     }
     @Transactional
     @CacheEvict(value = "review", allEntries = true)
-    public void updateReview(String reviewId, ReviewUpdateRequestDto requestDto,User user) {
-        Review review = reviewRepository.findById(reviewId)
+    public void updateReview(ReviewUpdateRequestDto requestDto,User user) {
+        Review review = reviewRepository.findById(requestDto.getReviewId())
                 .orElseThrow(null);
         //본인 글인지 판단
         if(review.getUser().getKakaoId().equals(user.getKakaoId())){
