@@ -7,11 +7,8 @@ import com.movie.movieapi.dto.ReviewSelectResponseDto;
 import com.movie.movieapi.dto.ReviewUpdateRequestDto;
 import com.movie.movieapi.repository.ReviewRepository;
 import com.movie.movieapi.repository.UserRepository;
-import com.movie.movieapi.util.MaskingUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -29,7 +26,7 @@ public class ReviewService {
 
 
     @Transactional
-    @CacheEvict(value = "review", allEntries = true)
+    //@CacheEvict(value = "review", allEntries = true)
     public void insertReview(ReviewInsertRequestDto reviewInsertRequestDto, User user) {
         User userInfo = userRepository.findByKakaoId(user.getKakaoId())
                 .orElseThrow(null);
@@ -43,7 +40,7 @@ public class ReviewService {
     }
 
     @Transactional(readOnly = true)
-    @Cacheable(value = "review")
+    //@Cacheable(value = "review")
     public Page<ReviewSelectResponseDto> selectReviews(Long movieId, Pageable pageable) {
         Page<Review> reviews = reviewRepository.findAllByMovieId(movieId,pageable);
         return reviews.map(review -> ReviewSelectResponseDto.builder()
@@ -55,7 +52,7 @@ public class ReviewService {
 
     }
     @Transactional
-    @CacheEvict(value = "review", allEntries = true)
+    //@CacheEvict(value = "review", allEntries = true)
     public void updateReview(ReviewUpdateRequestDto requestDto,User user) {
         Review review = reviewRepository.findById(requestDto.getReviewId())
                 .orElseThrow(null);
@@ -64,12 +61,14 @@ public class ReviewService {
             //리뷰 수정
             review.updateReview(requestDto);
             //DB 저장
-            reviewRepository.save(review);
+            //reviewRepository.save(review);
         }else{
             throw new NotFoundException("수정 할수 없습니다.");
         }
     }
 
+    @Transactional
+    //@CacheEvict(value = "review", allEntries = true)
     public void deleteReview(String reviewId, User user) {
         Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(null);
