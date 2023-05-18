@@ -51,8 +51,9 @@ public class ReviewService {
                 .build());
 
     }
-    @Transactional
+
     //@CacheEvict(value = "review", allEntries = true)
+    @Transactional
     public void updateReview(ReviewUpdateRequestDto requestDto,User user) {
         Review review = reviewRepository.findById(requestDto.getReviewId())
                 .orElseThrow(null);
@@ -61,14 +62,15 @@ public class ReviewService {
             //리뷰 수정
             review.updateReview(requestDto);
             //DB 저장
-            //reviewRepository.save(review);
+            reviewRepository.save(review);
         }else{
             throw new NotFoundException("수정 할수 없습니다.");
         }
     }
 
-    @Transactional
+
     //@CacheEvict(value = "review", allEntries = true)
+    @Transactional
     public void deleteReview(String reviewId, User user) {
         Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(null);
