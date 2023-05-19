@@ -48,6 +48,7 @@ public class ReviewService {
                 .kakaoId(review.getUser().getKakaoId())
                 .userNickname(review.getUser().getUserNickname())
                 .content(review.getContent())
+                .delYn(review.isDelYn())
                 .build());
 
     }
