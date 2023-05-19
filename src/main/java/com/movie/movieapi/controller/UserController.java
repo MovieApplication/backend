@@ -6,6 +6,7 @@ import com.movie.movieapi.dto.UserInsertRequestDto;
 import com.movie.movieapi.dto.UserLoginResponseDto;
 import com.movie.movieapi.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +33,7 @@ public class UserController{
     @Operation(summary = "토큰 재발급", description = "토큰 유효시간이 지날경우 토큰을 재발급 합니다.")
     @PostMapping("/refresh-token")
     public ResponseEntity<UserLoginResponseDto> refreshToken(@RequestBody TokenRequestDto tokenRequestDto,
-                                                             @AuthenticationPrincipal User user){
+                                                             @Parameter(hidden = true) @AuthenticationPrincipal User user){
         return ResponseEntity.ok( userService.refreshToken(tokenRequestDto,user));
     }
 
