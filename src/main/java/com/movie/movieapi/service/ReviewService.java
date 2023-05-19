@@ -34,7 +34,7 @@ public class ReviewService {
         User userInfo = userRepository.findByKakaoId(user.getKakaoId())
                 .orElseThrow(null);
 
-        boolean review = reviewRepository.existsByUserAndContentAndDelYn(userInfo,reviewInsertRequestDto.getContent(),false);
+        boolean review = reviewRepository.existsByUserAndMovieIdAndContentAndDelYn(userInfo,reviewInsertRequestDto.getMovieId(),reviewInsertRequestDto.getContent(),false);
 
         if(review){
             throw new NotFoundException("같은 내용으로 리뷰를 작성할 수 없습니다.");
