@@ -26,7 +26,7 @@ public class UserController{
     @Transactional
     @Operation(summary = "로그인 (토큰 획득)", description = "로그인을 하여 토큰을 획득합니다.")
     @PostMapping("/login/{kakaoId}")
-    public ResponseEntity<?> login(@PathVariable("kakaoId")String kakaoId){
+    public ResponseEntity<UserLoginResponseDto> login(@PathVariable("kakaoId")String kakaoId){
         return ResponseEntity.ok(userService.login(kakaoId));
     }
     @Transactional
@@ -47,7 +47,7 @@ public class UserController{
     @Transactional(readOnly = true)
     @Operation(summary = "유저 정보 있는지 체크", description = "유저 정보가 있는지 체크합니다.")
     @GetMapping("/info/{kakaoId}")
-    public ResponseEntity<?> userInfoCheck(@PathVariable("kakaoId")String kakaoId){
+    public ResponseEntity<Boolean> userInfoCheck(@PathVariable("kakaoId")String kakaoId){
 
         return ResponseEntity.ok(userService.userInfoCheck(kakaoId));
     }
