@@ -5,21 +5,18 @@ import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.format.annotation.DateTimeFormat;
-
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Data
 public class BaseTimeEntity {
     @CreatedDate
-    private LocalDateTime regDatetime;
+    private Date regDatetime;
     @LastModifiedDate
-    private LocalDateTime modDatetime;
+    private Date modDatetime;
     @CreatedBy
-    private String createBy;
+    private String createdBy;
     @LastModifiedBy
     private String modBy;
-
 
 
 }

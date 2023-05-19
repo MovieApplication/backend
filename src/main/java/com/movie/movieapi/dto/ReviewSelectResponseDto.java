@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Pageable;
 
 import java.io.Serializable;
+import java.util.Date;
 
 @Data
 @NoArgsConstructor
@@ -25,5 +26,7 @@ public class ReviewSelectResponseDto implements Serializable {
     private String userNickname;
     @Schema(example = "삭제여부")
     private boolean delYn;
+    @Schema(example = "등록일자")
+    private String regDatetime;
 
 }

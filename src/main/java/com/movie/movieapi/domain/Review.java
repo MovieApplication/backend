@@ -1,6 +1,5 @@
 package com.movie.movieapi.domain;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.movie.movieapi.domain.common.BaseTimeEntity;
 import com.movie.movieapi.dto.ReviewInsertRequestDto;
 import com.movie.movieapi.dto.ReviewUpdateRequestDto;
@@ -8,6 +7,7 @@ import lombok.*;
 import nonapi.io.github.classgraph.json.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import java.io.Serializable;
+
 
 
 @Getter

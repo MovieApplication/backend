@@ -7,6 +7,7 @@ import com.movie.movieapi.dto.ReviewSelectResponseDto;
 import com.movie.movieapi.dto.ReviewUpdateRequestDto;
 import com.movie.movieapi.repository.ReviewRepository;
 import com.movie.movieapi.repository.UserRepository;
+import com.movie.movieapi.util.DateUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -14,6 +15,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.webjars.NotFoundException;
+
+import java.text.SimpleDateFormat;
 
 @Service
 @Slf4j
@@ -42,6 +45,8 @@ public class ReviewService {
     @Transactional(readOnly = true)
     //@Cacheable(value = "review")
     public Page<ReviewSelectResponseDto> selectReviews(Long movieId, Pageable pageable) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy년 MM월 dd일 HH시:mm초");
+
         Page<Review> reviews = reviewRepository.findAllByMovieId(movieId,pageable);
         return reviews.map(review -> ReviewSelectResponseDto.builder()
                 .reviewId(review.get_id())
@@ -49,6 +54,7 @@ public class ReviewService {
                 .userNickname(review.getUser().getUserNickname())
                 .content(review.getContent())
                 .delYn(review.isDelYn())
+                .regDatetime(DateUtils.convertMongoDate(String.valueOf(review.getRegDatetime())))
                 .build());
 
     }

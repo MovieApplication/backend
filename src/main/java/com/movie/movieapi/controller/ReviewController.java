@@ -67,7 +67,7 @@ public class ReviewController {
     })
     @GetMapping("/{movieId}")
     public ResponseEntity<ListResponsePage<ReviewSelectResponseDto>> selectReviews(@PathVariable("movieId") Long movieId,
-                                                                                   @PageableDefault(sort = "regDatetime", direction = Sort.Direction.DESC)Pageable pageable) {
+                                                                                   @PageableDefault(sort = "regDatetime", direction = Sort.Direction.DESC) Pageable pageable) {
         return ResponseEntity.ok(new ListResponsePage<>(reviewService.selectReviews(movieId,pageable)));
     }
 }
