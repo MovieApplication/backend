@@ -19,6 +19,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -29,6 +30,7 @@ import org.springframework.web.bind.annotation.*;
 public class ReviewController {
     private final ReviewService reviewService;
 
+    @Transactional
     @Operation(summary = "리뷰 등록", description = "리뷰를 등록합니다.",security = @SecurityRequirement(name = "Authorization"))
     @PreAuthorize("isAuthenticated()")
     @PostMapping("")
@@ -37,6 +39,7 @@ public class ReviewController {
         reviewService.insertReview(reviewInsertRequestDto,user);
         return ResponseEntity.ok().build();
     }
+    @Transactional
     @Operation(summary = "리뷰 수정", description = "리뷰를 수정합니다.",security = @SecurityRequirement(name = "Authorization"))
     @PreAuthorize("isAuthenticated()")
     @PutMapping("")
@@ -45,6 +48,7 @@ public class ReviewController {
         reviewService.updateReview(reviewUpdateRequestDto,user);
         return ResponseEntity.ok().build();
     }
+    @Transactional
     @Operation(summary = "리뷰 삭제", description = "리뷰를 삭제합니다.",security = @SecurityRequirement(name = "Authorization"))
     @PreAuthorize("isAuthenticated()")
     @DeleteMapping("/{reviewId}")
@@ -54,6 +58,7 @@ public class ReviewController {
         return ResponseEntity.ok().build();
     }
 
+    @Transactional(readOnly = true)
     @Operation(summary = "리뷰 목록 조회", description = "리뷰 목록을 조회합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "정상 처리", content = @Content(schema = @Schema(implementation = ReviewSelectResponseDto.class)))
