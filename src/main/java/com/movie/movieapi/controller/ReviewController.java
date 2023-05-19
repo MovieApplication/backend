@@ -16,6 +16,8 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -65,7 +67,7 @@ public class ReviewController {
     })
     @GetMapping("/{movieId}")
     public ResponseEntity<ListResponsePage<ReviewSelectResponseDto>> selectReviews(@PathVariable("movieId") Long movieId,
-                                                                                   Pageable pageable) {
+                                                                                   @PageableDefault(sort = "regDatetimes", direction = Sort.Direction.DESC)Pageable pageable) {
         return ResponseEntity.ok(new ListResponsePage<>(reviewService.selectReviews(movieId,pageable)));
     }
 }
