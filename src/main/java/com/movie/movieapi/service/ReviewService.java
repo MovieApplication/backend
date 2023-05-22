@@ -10,6 +10,8 @@ import com.movie.movieapi.repository.UserRepository;
 import com.movie.movieapi.util.DateUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -29,7 +31,7 @@ public class ReviewService {
 
 
     @Transactional
-    //@CacheEvict(value = "review", allEntries = true)
+    @CacheEvict(value = "review", allEntries = true)
     public void insertReview(ReviewInsertRequestDto reviewInsertRequestDto, User user) {
         User userInfo = userRepository.findByKakaoId(user.getKakaoId())
                 .orElseThrow(null);
@@ -43,7 +45,7 @@ public class ReviewService {
     }
 
     @Transactional(readOnly = true)
-    //@Cacheable(value = "review")
+    @Cacheable(value = "review")
     public Page<ReviewSelectResponseDto> selectReviews(Long movieId, Pageable pageable) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy년 MM월 dd일 HH시:mm초");
 
@@ -59,7 +61,7 @@ public class ReviewService {
 
     }
 
-    //@CacheEvict(value = "review", allEntries = true)
+    @CacheEvict(value = "review", allEntries = true)
     @Transactional
     public void updateReview(ReviewUpdateRequestDto requestDto,User user) {
         Review review = reviewRepository.findById(requestDto.getReviewId())
@@ -76,7 +78,7 @@ public class ReviewService {
     }
 
 
-    //@CacheEvict(value = "review", allEntries = true)
+    @CacheEvict(value = "review", allEntries = true)
     @Transactional
     public void deleteReview(String reviewId, User user) {
         Review review = reviewRepository.findById(reviewId)
