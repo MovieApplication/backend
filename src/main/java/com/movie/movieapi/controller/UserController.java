@@ -32,9 +32,8 @@ public class UserController{
     @Transactional
     @Operation(summary = "토큰 재발급", description = "토큰 유효시간이 지날경우 토큰을 재발급 합니다.")
     @PostMapping("/refresh-token")
-    public ResponseEntity<UserLoginResponseDto> refreshToken(@RequestBody TokenRequestDto tokenRequestDto,
-                                                             @Parameter(hidden = true) @AuthenticationPrincipal User user){
-        return ResponseEntity.ok( userService.refreshToken(tokenRequestDto,user));
+    public ResponseEntity<UserLoginResponseDto> refreshToken(@RequestBody TokenRequestDto tokenRequestDto){
+        return ResponseEntity.ok( userService.refreshToken(tokenRequestDto));
     }
 
     @Transactional

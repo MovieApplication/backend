@@ -59,18 +59,19 @@ public class UserService {
         return userRepository.existsByKakaoId(kakaoId);
     }
 
-    public UserLoginResponseDto refreshToken(TokenRequestDto tokenRequestDto, User user) {
-        RefreshToken refreshTokenInfo = refreshTokenRepository.findBy_idAndUser(tokenRequestDto.getRefreshTokenId(),user).orElseThrow(null);
+    public UserLoginResponseDto refreshToken(TokenRequestDto tokenRequestDto) {
+        RefreshToken refreshTokenInfo = refreshTokenRepository.findBy_id(tokenRequestDto.getRefreshTokenId()).orElseThrow(null);
+
         //리프레시 토큰이 유효할 경우.
-        if(jwtUtil.validateRefreshToken(refreshTokenInfo.getRefreshToken(),user.getKakaoId())){
-            String accessToken = jwtUtil.generateToken(user);
+        if(jwtUtil.validateRefreshToken(refreshTokenInfo.getRefreshToken(),refreshTokenInfo.getUser().getKakaoId())){
+            String accessToken = jwtUtil.generateToken(refreshTokenInfo.getUser().getKakaoId());
 
             return new UserLoginResponseDto(accessToken,refreshTokenInfo.getRefreshToken());
         }
         //리프레시 토큰이 유효하지 않을 경우.
         else{
-            String accessToken = jwtUtil.generateToken(user);
-            String refreshToken = jwtUtil.generateRefreshToken(user.getKakaoId());
+            String accessToken = jwtUtil.generateToken(refreshTokenInfo.getUser().getKakaoId());
+            String refreshToken = jwtUtil.generateRefreshToken(refreshTokenInfo.getUser().getKakaoId());
             refreshTokenInfo.setRefreshToken(refreshToken);
 
             return new UserLoginResponseDto(accessToken,refreshTokenRepository.save(refreshTokenInfo).get_id());
