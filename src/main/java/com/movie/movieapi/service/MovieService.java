@@ -16,8 +16,6 @@ import java.time.format.DateTimeFormatter;
 @RequiredArgsConstructor
 public class MovieService {
 
-    @Value("${api_key}")
-    private String apiKey;
     @Value("${image-url}")
     private String defaultImageUrl;
 
@@ -27,7 +25,6 @@ public class MovieService {
     public MovieResponseDto selectMoviesInTheater(Integer page) {
         MovieResponseDto movieList = webClient.webClientInMovieSearch().get()
                 .uri(uriBuilder -> uriBuilder.path("")
-                        .queryParam("api_key", apiKey)
                         .queryParam("language", "ko")
                         .queryParam("page", page)
                         .queryParam("primary_release_date.gte", LocalDateTime.now().minusMonths(3).format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
@@ -48,7 +45,6 @@ public class MovieService {
     public MovieResponseDto selectPopularMovies(Integer page) {
         MovieResponseDto movieList = webClient.webClientInMovie().get()
                 .uri(uriBuilder -> uriBuilder.path("/popular")
-                        .queryParam("api_key", apiKey)
                         .queryParam("language", "ko")
                         .queryParam("page", page)
                         .build())
@@ -67,7 +63,6 @@ public class MovieService {
     public MovieDetailResponseDto selectMovie(Long movieId) {
         MovieDetailResponseDto movie = webClient.webClientInMovie().get()
                 .uri(uriBuilder -> uriBuilder.path("/" + movieId)
-                        .queryParam("api_key", apiKey)
                         .queryParam("language", "ko")
                         .build())
                 .retrieve().bodyToMono(MovieDetailResponseDto.class)
@@ -83,7 +78,6 @@ public class MovieService {
     public MovieResponseDto selectSimilarMovie(Long movieId,Integer page) {
         MovieResponseDto movieList = webClient.webClientInMovie().get()
                 .uri(uriBuilder -> uriBuilder.path("/" + movieId + "/similar")
-                        .queryParam("api_key", apiKey)
                         .queryParam("language", "ko")
                         .queryParam("page", page)
                         .build())
@@ -102,7 +96,6 @@ public class MovieService {
     public MovieResponseDto selectVoteAverageMovies(Integer page) {
             MovieResponseDto movieList = webClient.webClientInMovieSearch().get()
                     .uri(uriBuilder -> uriBuilder.path("")
-                            .queryParam("api_key", apiKey)
                             .queryParam("language", "ko")
                             .queryParam("sort_by","vote_average.desc")
                             .queryParam("page",page)
@@ -122,7 +115,6 @@ public class MovieService {
     public MovieResponseDto selectReleaseDateMovies(Integer page) {
         MovieResponseDto movieList = webClient.webClientInMovieSearch().get()
                 .uri(uriBuilder -> uriBuilder.path("")
-                        .queryParam("api_key", apiKey)
                         .queryParam("language", "ko")
                         .queryParam("sort_by", "primary_release_date.desc")
                         .queryParam("page", page)
@@ -144,7 +136,6 @@ public class MovieService {
         //년도별 영화 조회 시
         MovieResponseDto movieList = webClient.webClientInMovieSearch().get()
                 .uri(uriBuilder -> uriBuilder.path("")
-                        .queryParam("api_key", apiKey)
                         .queryParam("language", "ko")
                         .queryParam("primary_release_year",searchDto.getYear())
                         .queryParam("page",searchDto.getPage())
