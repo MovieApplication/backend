@@ -85,20 +85,23 @@ public class JwtUtil {
         return Long.parseLong(extractAllClaims(request.getHeader("Authorization").replace("Bearer ","")).get("_id").toString());
     }
 
-    public String generateRefreshToken(String userId) {
+    public String generateRefreshToken(User user) {
         Map<String, Object> claims = new HashMap<>();
-        return createRefreshToken(claims, userId);
+        //claims.put("_id", user.get_id());
+        return createRefreshToken(claims, user.getKakaoId());
     }
 
     private String createToken(Map<String, Object> claims, String subject) {
         return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60))  //1분 이려면 뒤에 * 5 = 5분
+                //.setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 5))  //5분
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60))  //5분
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
     }
 
     private String createRefreshToken(Map<String, Object> claims, String subject) {
         return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))  //10시간
+                //.setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))  //10시간
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 5))  //10시간
                 .signWith(SignatureAlgorithm.HS256, REFRESH_SECRET_KEY).compact();
     }
 

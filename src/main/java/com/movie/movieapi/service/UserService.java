@@ -40,7 +40,7 @@ public class UserService {
         //access token 생성
         final String accessToken = jwtUtil.generateToken(userInfo);
         //refresh token 생성
-        final String refreshToken = jwtUtil.generateRefreshToken(kakaoId);
+        final String refreshToken = jwtUtil.generateRefreshToken(userInfo);
 
         RefreshToken refreshTokenInfo = refreshTokenRepository.findByUser(userInfo).orElse(null);
         if (refreshTokenInfo != null) {
@@ -65,22 +65,8 @@ public class UserService {
         //리프레시 토큰이 유효할 경우.
         if(jwtUtil.validateRefreshToken(refreshTokenInfo.getRefreshToken(),refreshTokenInfo.getUser().getKakaoId())){
             String accessToken = jwtUtil.generateToken(refreshTokenInfo.getUser().getKakaoId());
-
-            return new UserLoginResponseDto(accessToken,refreshTokenInfo.getRefreshToken());
+            return new UserLoginResponseDto(accessToken,refreshTokenInfo.get_id());
         }
-        //리프레시 토큰이 유효하지 않을 경우.
-        else{
-            String accessToken = jwtUtil.generateToken(refreshTokenInfo.getUser().getKakaoId());
-            String refreshToken = jwtUtil.generateRefreshToken(refreshTokenInfo.getUser().getKakaoId());
-            refreshTokenInfo.setRefreshToken(refreshToken);
-
-            return new UserLoginResponseDto(accessToken,refreshTokenRepository.save(refreshTokenInfo).get_id());
-        }
-
-
-
-
-
-
+        return null;
     }
 }
