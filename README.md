@@ -56,7 +56,7 @@
    **Rest-api가 강력하게 원하는 코드스타일이 있다. 그 코드스타일에 맞춰 개발하려고 노력하였고 필요없는 로직을 제거 후 리펙토링 하여 가독성이 좋게 코드를 짯다고 자부한다.**
 <br>   
    
-- ### 프로젝트 화면
+## ❓   
 ![메인1](https://github.com/MovieApplication/backend/assets/73875312/1b7d9ef5-623d-4a21-a4b5-b30e219c41fb)
 
 ![메인2](https://github.com/MovieApplication/backend/assets/73875312/8bd45cfc-66ec-4f10-a98b-c7402ae99b63)
