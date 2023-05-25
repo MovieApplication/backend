@@ -15,7 +15,7 @@
 - **SpringBoot 2.7.3**, **Spring Security**
 - **Java 11**, **Jwt**, **Mockito**, **Junit5**
 - **MongoDB**, **Spring Data MongoDB**
-- **Redis**
+- **Redis**, **Swagger**
 
 <br>  
 
