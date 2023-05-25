@@ -1,6 +1,8 @@
 package com.movie.movieapi.filter;
 
 import com.movie.movieapi.domain.User;
+import com.movie.movieapi.exception.CommonErrorCode;
+import com.movie.movieapi.exception.RestApiException;
 import com.movie.movieapi.repository.UserRepository;
 import com.movie.movieapi.util.JwtUtil;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -12,8 +14,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import org.webjars.NotFoundException;
-
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -42,16 +42,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 kakaoId = jwtUtil.extractUsername(jwt);
             }catch(IllegalArgumentException e){
                 logger.error("error occured during getting username from token!", e);
-                throw new NotFoundException("error occured during getting username from token!");
+                throw new RestApiException(CommonErrorCode.INVALID_TOKEN, CommonErrorCode.INVALID_TOKEN.getMessage());
             }catch(ExpiredJwtException e){
                 logger.warn("the token is expired and not valid anymore!", e);
-                throw new NotFoundException("the token is expired and not valid anymore!");
+                throw new RestApiException(CommonErrorCode.EXPIRED_TOKEN, CommonErrorCode.EXPIRED_TOKEN.getMessage());
             }catch(SignatureException e){
                 logger.error("Authentication Failed. Username or Password not valid.");
-                throw new NotFoundException("Authentication Failed. Username or Password not valid.");
+                throw new RestApiException(CommonErrorCode.AUTHENTICATION_FAILED, CommonErrorCode.AUTHENTICATION_FAILED.getMessage());
             }catch(MalformedJwtException e){
                 logger.error("the token is not valid!", e);
-                throw new NotFoundException("the token is not valid!");
+                throw new RestApiException(CommonErrorCode.WRONG_TOKEN, CommonErrorCode.WRONG_TOKEN.getMessage());
             }
         }else{
             logger.warn("couldn't find bearer string, will ignore the header");

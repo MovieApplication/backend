@@ -5,15 +5,16 @@ import com.movie.movieapi.domain.User;
 import com.movie.movieapi.dto.TokenRequestDto;
 import com.movie.movieapi.dto.UserInsertRequestDto;
 import com.movie.movieapi.dto.UserLoginResponseDto;
+import com.movie.movieapi.exception.CommonErrorCode;
+import com.movie.movieapi.exception.RestApiException;
+import com.movie.movieapi.exception.UserErrorCode;
 import com.movie.movieapi.repository.RefreshTokenRepository;
 import com.movie.movieapi.repository.UserRepository;
 import com.movie.movieapi.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.webjars.NotFoundException;
 
 @Service
 @Slf4j
@@ -28,21 +29,23 @@ public class UserService {
         //기존 동일 회원 체크
         boolean userCheck = userRepository.existsByUserNicknameAndKakaoId(userInsertRequestDto.getUserNickname(), userInsertRequestDto.getKakaoId());
         if (userCheck) {
-            throw new NotFoundException("이미 해당 정보로 등록된 회원이 있습니다.");
+            throw new RestApiException(UserErrorCode.EXIST_USER);
         }
         //DB 저장
         userRepository.save(new User(userInsertRequestDto));
     }
 
     public UserLoginResponseDto login(String kakaoId) {
-        User userInfo = userRepository.findByKakaoId(kakaoId).orElseThrow(null);
+        User userInfo = userRepository.findByKakaoId(kakaoId)
+                .orElseThrow(() -> new RestApiException(UserErrorCode.INACTIVE_USER));
 
         //access token 생성
         final String accessToken = jwtUtil.generateToken(userInfo);
         //refresh token 생성
         final String refreshToken = jwtUtil.generateRefreshToken(userInfo);
 
-        RefreshToken refreshTokenInfo = refreshTokenRepository.findByUser(userInfo).orElse(null);
+        RefreshToken refreshTokenInfo = refreshTokenRepository.findByUser(userInfo)
+                .orElseThrow(()-> new RestApiException(CommonErrorCode.NOT_FOUND_REFRESH_TOKEN));
         if (refreshTokenInfo != null) {
             //처음 로그인이 아닌 사람.
             refreshTokenInfo.setRefreshToken(refreshToken, userInfo);
@@ -60,7 +63,8 @@ public class UserService {
     }
 
     public UserLoginResponseDto refreshToken(TokenRequestDto tokenRequestDto) {
-        RefreshToken refreshTokenInfo = refreshTokenRepository.findBy_id(tokenRequestDto.getRefreshTokenId()).orElseThrow(null);
+        RefreshToken refreshTokenInfo = refreshTokenRepository.findBy_id(tokenRequestDto.getRefreshTokenId())
+                .orElseThrow(()-> new RestApiException(CommonErrorCode.NOT_FOUND_REFRESH_TOKEN));
 
         //리프레시 토큰이 유효할 경우.
         if(jwtUtil.validateRefreshToken(refreshTokenInfo.getRefreshToken(),refreshTokenInfo.getUser().getKakaoId())){

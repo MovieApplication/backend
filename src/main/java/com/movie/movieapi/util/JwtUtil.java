@@ -93,13 +93,13 @@ public class JwtUtil {
 
     private String createToken(Map<String, Object> claims, String subject) {
         return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 5))  //5분
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60))  //5분
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
     }
 
     private String createRefreshToken(Map<String, Object> claims, String subject) {
         return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))  //10시간
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60))  //10시간
                 .signWith(SignatureAlgorithm.HS256, REFRESH_SECRET_KEY).compact();
     }
 

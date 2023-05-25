@@ -5,6 +5,9 @@ import com.movie.movieapi.domain.User;
 import com.movie.movieapi.dto.ReviewInsertRequestDto;
 import com.movie.movieapi.dto.ReviewSelectResponseDto;
 import com.movie.movieapi.dto.ReviewUpdateRequestDto;
+import com.movie.movieapi.exception.CommonErrorCode;
+import com.movie.movieapi.exception.RestApiException;
+import com.movie.movieapi.exception.UserErrorCode;
 import com.movie.movieapi.repository.ReviewRepository;
 import com.movie.movieapi.repository.UserRepository;
 import com.movie.movieapi.util.DateUtils;
@@ -16,10 +19,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.webjars.NotFoundException;
-
-import java.text.SimpleDateFormat;
-
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -34,12 +33,12 @@ public class ReviewService {
     @CacheEvict(value = "review", allEntries = true)
     public void insertReview(ReviewInsertRequestDto reviewInsertRequestDto, User user) {
         User userInfo = userRepository.findByKakaoId(user.getKakaoId())
-                .orElseThrow(null);
+                .orElseThrow(() -> new RestApiException(UserErrorCode.INACTIVE_USER));
 
         boolean review = reviewRepository.existsByUserAndMovieIdAndContentAndDelYn(userInfo,reviewInsertRequestDto.getMovieId(),reviewInsertRequestDto.getContent(),false);
 
         if(review){
-            throw new NotFoundException("같은 내용으로 리뷰를 작성할 수 없습니다.");
+            throw new RestApiException(CommonErrorCode.NOT_DUPLICATION_REVIEW);
         }
         reviewRepository.save(new Review(reviewInsertRequestDto, userInfo));
     }
@@ -47,7 +46,6 @@ public class ReviewService {
     @Transactional(readOnly = true)
     @Cacheable(value = "review")
     public Page<ReviewSelectResponseDto> selectReviews(Long movieId, Pageable pageable) {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy년 MM월 dd일 HH시:mm초");
 
         Page<Review> reviews = reviewRepository.findAllByMovieId(movieId,pageable);
         return reviews.map(review -> ReviewSelectResponseDto.builder()
@@ -65,7 +63,7 @@ public class ReviewService {
     @Transactional
     public void updateReview(ReviewUpdateRequestDto requestDto,User user) {
         Review review = reviewRepository.findById(requestDto.getReviewId())
-                .orElseThrow(null);
+                .orElseThrow(() -> new RestApiException(CommonErrorCode.NOT_FOUND_REVIEW));
         //본인 글인지 판단
         if(review.getUser().getKakaoId().equals(user.getKakaoId())){
             //리뷰 수정
@@ -73,7 +71,7 @@ public class ReviewService {
             //DB 저장
             reviewRepository.save(review);
         }else{
-            throw new NotFoundException("수정 할수 없습니다.");
+            throw new RestApiException(CommonErrorCode.NOT_MINE_REVIEW);
         }
     }
 
@@ -82,7 +80,7 @@ public class ReviewService {
     @Transactional
     public void deleteReview(String reviewId, User user) {
         Review review = reviewRepository.findById(reviewId)
-                .orElseThrow(null);
+                .orElseThrow(() -> new RestApiException(CommonErrorCode.NOT_FOUND_REVIEW));
         //본인 글인지 판단
         if(review.getUser().getKakaoId().equals(user.getKakaoId())){
             //리뷰 삭제
@@ -90,7 +88,7 @@ public class ReviewService {
             //DB 저장
             reviewRepository.save(review);
         }else{
-            throw new NotFoundException("삭제 할수 없습니다.");
+            throw new RestApiException(CommonErrorCode.NOT_MINE_REVIEW);
         }
     }
 }
