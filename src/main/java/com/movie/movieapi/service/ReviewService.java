@@ -47,13 +47,12 @@ public class ReviewService {
     @Cacheable(value = "review")
     public Page<ReviewSelectResponseDto> selectReviews(Long movieId, Pageable pageable) {
 
-        Page<Review> reviews = reviewRepository.findAllByMovieId(movieId,pageable);
+        Page<Review> reviews = reviewRepository.findAllByMovieIdAndDelYn(movieId,false,pageable);
         return reviews.map(review -> ReviewSelectResponseDto.builder()
                 .reviewId(review.get_id())
                 .kakaoId(review.getUser().getKakaoId())
                 .userNickname(review.getUser().getUserNickname())
                 .content(review.getContent())
-                .delYn(review.isDelYn())
                 .regDatetime(DateUtils.convertMongoDate(String.valueOf(review.getRegDatetime())))
                 .build());
 
