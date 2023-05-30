@@ -49,5 +49,4 @@ public class UserController{
     public ResponseEntity<Boolean> userInfoCheck(@PathVariable("kakaoId") String kakaoId){
         return ResponseEntity.ok(userService.userInfoCheck(kakaoId));
     }
-
 }

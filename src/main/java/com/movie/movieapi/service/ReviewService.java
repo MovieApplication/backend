@@ -54,6 +54,7 @@ public class ReviewService {
                 .userNickname(review.getUser().getUserNickname())
                 .content(review.getContent())
                 .regDatetime(DateUtils.convertMongoDate(String.valueOf(review.getRegDatetime())))
+                .modDatetime(DateUtils.convertMongoDate(String.valueOf(review.getModDatetime())))
                 .build());
 
     }

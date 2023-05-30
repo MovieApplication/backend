@@ -26,5 +26,7 @@ public class ReviewSelectResponseDto implements Serializable {
     private String userNickname;
     @Schema(example = "등록일자")
     private String regDatetime;
+    @Schema(example = "수정일자")
+    private String modDatetime;
 
 }
