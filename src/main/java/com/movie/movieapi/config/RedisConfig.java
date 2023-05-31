@@ -7,6 +7,7 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
+import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
@@ -45,6 +46,17 @@ public class RedisConfig extends CachingConfigurerSupport {
     }
 
     @Bean
+    public RedisCacheManager redisCacheManager() {
+        RedisCacheManager redisCacheManager = RedisCacheManager.RedisCacheManagerBuilder
+                .fromConnectionFactory(redisConnectionFactory())
+                .cacheDefaults(defaultCacheConfig())
+                .withInitialCacheConfigurations(customCacheConfig())
+                .build();
+        redisCacheManager.setTransactionAware(false);
+        return redisCacheManager;
+    }
+
+    @Bean
     public RedisTemplate<String, String> redisTemplate() {
         RedisTemplate<String, String> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(redisConnectionFactory());
@@ -55,7 +67,7 @@ public class RedisConfig extends CachingConfigurerSupport {
     @Bean
     public Map<String, RedisCacheConfiguration> customCacheConfig() {
         Map<String, RedisCacheConfiguration> cache = new HashMap<>();
-        cache.put("review", defaultCacheConfig().entryTtl(Duration.ofSeconds(30)));
+        cache.put("review", defaultCacheConfig().entryTtl(Duration.ofSeconds(10)));
 
         return cache;
     }
