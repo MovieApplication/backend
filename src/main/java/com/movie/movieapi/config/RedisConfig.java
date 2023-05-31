@@ -67,7 +67,7 @@ public class RedisConfig extends CachingConfigurerSupport {
     @Bean
     public Map<String, RedisCacheConfiguration> customCacheConfig() {
         Map<String, RedisCacheConfiguration> cache = new HashMap<>();
-        cache.put("review", defaultCacheConfig().entryTtl(Duration.ofSeconds(10)));
+        cache.put("review", defaultCacheConfig().entryTtl(Duration.ofSeconds(40)));
 
         return cache;
     }
