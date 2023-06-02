@@ -45,7 +45,7 @@ public class UserService {
         final String refreshToken = jwtUtil.generateRefreshToken(userInfo);
 
         RefreshToken refreshTokenInfo = refreshTokenRepository.findByUser(userInfo)
-                .orElseThrow(()-> new RestApiException(CommonErrorCode.NOT_FOUND_REFRESH_TOKEN));
+                .orElse(null);
         if (refreshTokenInfo != null) {
             //처음 로그인이 아닌 사람.
             refreshTokenInfo.setRefreshToken(refreshToken, userInfo);
