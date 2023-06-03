@@ -131,7 +131,7 @@ public class MovieService {
         }
         return movieList;
     }
-
+    
     public MovieResponseDto selectYearMovies(SearchDto searchDto) {
         //년도별 영화 조회 시
         MovieResponseDto movieList = webClient.webClientInMovieSearch().get()
