@@ -44,8 +44,7 @@ public class UserService {
         //refresh token 생성
         final String refreshToken = jwtUtil.generateRefreshToken(userInfo);
 
-        RefreshToken refreshTokenInfo = refreshTokenRepository.findByUser(userInfo)
-                .orElse(null);
+        RefreshToken refreshTokenInfo = refreshTokenRepository.findByUser(userInfo).orElse(null);
         if (refreshTokenInfo != null) {
             //처음 로그인이 아닌 사람.
             refreshTokenInfo.setRefreshToken(refreshToken, userInfo);
