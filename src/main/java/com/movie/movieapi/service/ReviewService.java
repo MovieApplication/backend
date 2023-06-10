@@ -44,7 +44,7 @@ public class ReviewService {
     }
 
     @Transactional(readOnly = true)
-    @Cacheable(value = "review",key = "#pageable")
+    @Cacheable(value = "review",key = "#movieId")
     public Page<ReviewSelectResponseDto> selectReviews(Long movieId, Pageable pageable) {
 
         Page<Review> reviews = reviewRepository.findAllByMovieIdAndDelYn(movieId,false,pageable);
