@@ -84,5 +84,6 @@ public class RedisConfig extends CachingConfigurerSupport {
                 .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(RedisSerializer.java()))
                 .entryTtl(Duration.ofSeconds(600));
     }
+
 }
 
