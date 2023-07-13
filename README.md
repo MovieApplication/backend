@@ -67,7 +67,7 @@
    
 ## ❓ 프로젝트 화면
 
-url : http://15.165.236.184:3000/
+url : [http://15.165.236.184:3000/](http://3.34.139.203:3000/)
 
 
 ![메인1](https://github.com/MovieApplication/backend/assets/73875312/1b7d9ef5-623d-4a21-a4b5-b30e219c41fb)
