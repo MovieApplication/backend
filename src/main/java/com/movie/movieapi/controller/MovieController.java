@@ -27,7 +27,7 @@ public class MovieController {
 
     @Operation(summary = "실시간 인기 순위 영화 리스트 목록 조회", description = "실시간 인기 순위 영화 리스트 목록 조회를 합니다.")
     @GetMapping("/popular")
-    public ResponseEntity<MovieResponseDto> selectPopularMovies(@RequestParam(value = "page",required = false)Integer page){
+    public ResponseEntity<MovieResponseDto> selectPopularMovies(@RequestParam(value = "page")Integer page){
         return ResponseEntity.ok(movieService.selectPopularMovies(page));
     }
     @Operation(summary = "평점 높은순으로 영화 목록 조회", description = "평점 높은순으로 영화 목록 조회를 합니다.")
